@@ -38,5 +38,5 @@ reader.readAsDataURL(input.files[0]);
 };
 button.onchange = function(){openFile(event)};
 filesWrapper.ondrop = function(){
-    openFile(event);
+    button.change;
 }
