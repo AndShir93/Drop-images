@@ -1,42 +1,41 @@
 const filesWrapper = document.querySelector('.drop-wrapper');
-const files = document.querySelectorAll('.files-wrapper__item');
+const filesItem = document.querySelectorAll('.files-wrapper__item');
 const button = document.querySelector('#drop');
 let arr = [];
 
-// filesWrapper.addEventListener('drag',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('dragstart',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('dragend',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('dragover',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('dragenter',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('dragleave',function(event){event.preventDefault()});
-// filesWrapper.addEventListener('drop',function(event){event.preventDefault()});
+let insertImages = function(){
+    for(let i = 0; i < arr.length; i++){
+        filesItem[i].innerHTML = arr[i];
+        let a = arr.length > 15 ? button.setAttribute('disabled', true) : button.removeAttribute('disabled');
+    };
+}
 
 
 if(localStorage.getItem('images')){
     arr = JSON.parse(localStorage.getItem('images'));
-    arr.forEach(function(item, i, arr){
-        files[i].innerHTML = arr[i];
-    });
+    insertImages();    
 }
 
-let openFile = function(event) {
-let input = event.target;
-let reader = new FileReader();
-console.log(reader);
-    reader.onload = function(){
-        let dataURL = reader.result;
-        let el = `<img class="files-wrapper__images" src=${dataURL}>`;
-        arr.unshift(el);
-        localStorage.setItem('images', JSON.stringify(arr));
-        arr.forEach(function(item, i, arr){
-            files[i].innerHTML = arr[i];
-        });
-        reader = '';
-        let a = arr.length === 16 ? button.setAttribute('disabled', true) : button.removeAttribute('disabled');
-    };    
-reader.readAsDataURL(input.files[0]);
+
+
+let openFile = function() {
+    let files = button.files;
+    for(let i = 0; i < files.length; i++){
+        let reader = new FileReader();
+        reader.readAsDataURL(files[i]);
+        reader.onload = function(){
+            let urlFiles = reader.result;
+            let el = `<img class="files-wrapper__images" src=${urlFiles}>`;
+            arr.unshift(el);
+            localStorage.setItem('images', JSON.stringify(arr));
+            insertImages();
+        }
+    }
 };
-button.onchange = function(){openFile(event)};
-filesWrapper.ondrop = function(){
+
+button.onchange = function(){
+    openFile();
+};
+filesWrapper.ondrop = function(event){
     button.change;
 }
