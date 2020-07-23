@@ -44,3 +44,18 @@ body{
         height: 100%;
     }
 }
+.progress-wrapper{
+    width: 400px;
+    margin: 20px auto;
+}
+.progress{
+    border: 1px solid #000;
+    border-radius: 6px;
+    width: 95%;
+    height: 30px;
+    &__line{
+        width: 0;
+        height: 100%;
+        background-color: green;
+    }
+}
